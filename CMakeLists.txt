@@ -8,24 +8,17 @@ set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 #pybind11 config
 find_package(Python3 REQUIRED COMPONENTS Interpreter Development)
-set(pybind11_DIR /usr/include/pybind11)
-find_package(pybind11 REQUIRED)
-
-#Eigen
-find_package(Eigen3 REQUIRED)
+add_subdirectory(extern/pybind11)
 
 #Source
 set(SOURCES src/knn.cpp src/bindings.cpp)
 
 pybind11_add_module(_classifier ${SOURCES})
 
-target_include_directories(_classifier PRIVATE include)
-
-#Other libraries
-target_link_libraries(_classifier PRIVATE Eigen3::Eigen)
+target_include_directories(_classifier PRIVATE include extern/eigen)
 
 if (NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE Release)
 endif()
 
-target_compile_options(_classifier PRIVATE -03)
+target_compile_options(_classifier PRIVATE -O3)
