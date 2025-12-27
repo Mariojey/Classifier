@@ -15,7 +15,7 @@ private:
     double euclideanDistance(
         const Eigen::VectorXd& a,
         const Eigen::VectorXd& b
-    )
+    ) const;
 
 public:
 

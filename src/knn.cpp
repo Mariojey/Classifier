@@ -55,17 +55,17 @@ int KNNClassifier::predict_one(const Eigen::VectorXd& x) const
         throw runtime_error("Model not fitted");
     }
 
-    if (x.size() != X_train.cols())
+    if (x.size() != X_train_.cols())
     {
         throw invalid_argument("Incorrect input dimension");
     }
 
     vector<pair<double, int>> distances;
-    distances.reserve(X_train.rows());
+    distances.reserve(X_train_.rows());
 
-    for (int i = 0; i < X_train.rows(); ++i){
+    for (int i = 0; i < X_train_.rows(); ++i){
 
-        double distance = euclidean_distance(x, X_train_.row(i));
+        double distance = euclideanDistance(x, X_train_.row(i));
         distances.emplace_back(distance, y_train_(i));
     }
 
@@ -76,12 +76,12 @@ int KNNClassifier::predict_one(const Eigen::VectorXd& x) const
         [](const auto& a, const auto& b) {
             return a.first < b.first;
         }
-    )
+    );
 
     map<int, int> votes;
 
     for(int i = 0; i < k_; ++i){
-        votes[distance[i].second]++;
+        votes[distances[i].second]++;
     }
 
     int bestLabel = -1;
@@ -103,9 +103,9 @@ bool KNNClassifier::is_fitted() const
     return fitted_;
 }
 
-double KNNClassifier::euclidean_distance(
-    const Eigen::VectorXd& a,
-    const Eigen::VectorXd& b
+double KNNClassifier::euclideanDistance(
+    const Eigen::VectorXd &a,
+    const Eigen::VectorXd &b
 ) const{
     return (a - b).norm();
 }

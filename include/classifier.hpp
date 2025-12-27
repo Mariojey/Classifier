@@ -17,6 +17,6 @@ public:
     virtual int predict_one(const Eigen::VectorXd& x) const = 0;
 
     virtual bool is_fitted() const = 0;
-}
+};
 
 }
